@@ -44,7 +44,7 @@ The mean and meadian total number of steps take per day is `r meansteps` & `r me
 ####Plotting the pattern
 
 ```{r}
-plot(interval,insteps,type="l",col = 'blue', main = "Daily activity pattern", xlab = "time (min)", ylab = "Average steps" )
+s1 <- plot(interval,insteps,type="l",col = 'blue', main = "Daily activity pattern", xlab = "time (min)", ylab = "Average steps" )
 ```
 
 ####Maximum number of steps
@@ -72,8 +72,12 @@ for (i in seq_along(day)){
     vect <- which(data$date == day[i])
     newsteps[i]<-sum(temp[vect])
 }
+
+m_newsteps <- mean(newsteps)
+med_newsteps <- median(newsteps)
 ```
 
+The strategy I used is to rplace the NA values with the average steps/interval over all intervals. Which gave mean and median values of `r m_newsteps` & `r med_newsteps` respectively.
 
 ```{r}
 
@@ -105,6 +109,7 @@ plot( p2, col=rgb(1,0,0,1/4), ylim = c(0,20), add=T)  # second
 ```
 
 ```{r}
-plot(interval,wkdaysteps,type="l",col = 'blue', main = "Daily activity pattern Weekdays", xlab = "time (min)", ylab = "Average steps" )
-plot(interval,wkendsteps,type="l",col = 'red', main = "Daily activity pattern Weekends", xlab = "time (min)", ylab = "Average steps" )
+s2 <- plot(interval,wkdaysteps,type="l",col = 'blue', main = "Daily activity pattern Weekdays", xlab = "time (min)", ylab = "Average steps" )
+
+plot(interval,wkendsteps,type="l",col = 'red', main = "Daily activity pattern Weekends", xlab = "time (min)", ylab = "Average steps")
 ```
