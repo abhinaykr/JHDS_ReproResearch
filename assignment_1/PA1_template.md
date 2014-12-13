@@ -1,13 +1,9 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 # Loading Data
 options(warn=-1)
    data<- read.csv("activity.csv")
@@ -20,19 +16,24 @@ options(warn=-1)
     }
 ```
 ## Histogram of steps 
-```{r}
+
+```r
 p1 <- hist(steps, col = 'blue', breaks = seq(from = 0, to = 25000, by = 1000), main = 'Histogram Overlap ', xlab = 'Steps')
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
 ##What is mean total number of steps taken per day?
-```{r}
+
+```r
 meansteps <- mean(steps)
 mediansteps <- median(steps)
 ```
-The mean and meadian total number of steps take per day is `r meansteps` & `r mediansteps` respectively.
+The mean and meadian total number of steps take per day is 9354.2295082 & 1.0395\times 10^{4} respectively.
 
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 # Subsetting to cover 5 minute interval
     interval <- data$interval[1:288]
     insteps <- vector("numeric",length(interval))
@@ -43,28 +44,34 @@ The mean and meadian total number of steps take per day is `r meansteps` & `r me
 ```
 ####Plotting the pattern
 
-```{r}
+
+```r
 plot(interval,insteps,type="l",col = 'blue', main = "Daily activity pattern", xlab = "time (min)", ylab = "Average steps" )
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+
 ####Maximum number of steps
 
-```{r}
+
+```r
 maxsteps <-max(insteps)
 maxstepsinterval <- interval[which(insteps==maxsteps)]
 ```
 
-At `r maxstepsinterval`  minutes, the maximum number of steps (`r maxsteps`) were taken on average across all days
+At 835  minutes, the maximum number of steps (206.1698113) were taken on average across all days
 
 ## Imputing missing values
-```{r}
+
+```r
 good <- complete.cases(data)
 missing <- length(data$steps)-length(data$steps[good])
 ```
 
-There are `r missing` rows of missing values.
+There are 2304 rows of missing values.
 
-```{r}
+
+```r
 # replaced NA values over average steps/interval over all intervals
 temp <- replace(data$steps, is.na(data$steps), mean(insteps))
 newsteps <- vector("numeric",length(day))
@@ -75,20 +82,26 @@ for (i in seq_along(day)){
 ```
 
 
-```{r}
 
+```r
 p2 <- hist(newsteps, col = 'red', breaks = seq(from = 0, to = 25000, by = 1000), main = 'Histogram after replacing NA', xlab = 'Steps')
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+
 As you can see in the overlap below, the number of 0 step days reduced in frequency, while gaining on the 10,000+ steps
-```{r}
+
+```r
 plot( p1, col=rgb(0,0,1,1/4), ylim = c(0,20) )  # first histogram
 plot( p2, col=rgb(1,0,0,1/4), ylim = c(0,20), add=T)  # second
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
+
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 # Subsetting to cover 5 minute interval for Weekdays
     wkdays<-weekdays(as.Date(data$date))
     wkdaysteps <- vector("numeric",length(interval))
@@ -104,7 +117,15 @@ plot( p2, col=rgb(1,0,0,1/4), ylim = c(0,20), add=T)  # second
     }
 ```
 
-```{r}
+
+```r
 plot(interval,wkdaysteps,type="l",col = 'blue', main = "Daily activity pattern Weekdays", xlab = "time (min)", ylab = "Average steps" )
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+
+```r
 plot(interval,wkendsteps,type="l",col = 'red', main = "Daily activity pattern Weekends", xlab = "time (min)", ylab = "Average steps" )
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-2.png) 
